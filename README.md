@@ -98,3 +98,116 @@ This endpoint allows new users to register in the system. Upon successful regist
   "error": "Error message here"
 }
 ```
+
+## User Profile
+
+### Endpoint
+
+```
+GET /users/profile
+```
+
+### Description
+
+This endpoint retrieves the profile information of the currently authenticated user. It requires a valid authentication token. If the token is blacklisted (e.g., after logout), the request will be rejected with an unauthorized error.
+
+### Authentication
+
+- Requires valid JWT token in either:
+  - Cookie named "token"
+  - Authorization header as "Bearer token"
+- Token must not be blacklisted
+- Token must be valid and not expired
+
+### Response
+
+#### Success Response (200 OK)
+
+```json
+{
+  "_id": "user_id",
+  "fullname": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "email": "john.doe@example.com",
+  "socketId": null
+}
+```
+
+#### Error Responses
+
+##### 401 Unauthorized
+
+```json
+{
+  "error": "Unauthorized"
+}
+```
+
+This error will be returned if:
+
+- No token is provided
+- Token is invalid or expired
+- Token is blacklisted (e.g., after logout)
+- User associated with token no longer exists
+
+##### 500 Internal Server Error
+
+```json
+{
+  "error": "Error message here"
+}
+```
+
+## User Logout
+
+### Endpoint
+
+```
+GET /users/logout
+```
+
+### Description
+
+This endpoint allows authenticated users to log out of the system. It invalidates the current session token by adding it to a blacklist and clearing the token cookie.
+
+### Authentication
+
+- Requires valid JWT token in either:
+  - Cookie named "token"
+  - Authorization header as "Bearer token"
+
+### Response
+
+#### Success Response (200 OK)
+
+```json
+{
+  "message": "Logged out successfully"
+}
+```
+
+#### Error Responses
+
+##### 401 Unauthorized
+
+```json
+{
+  "error": "Unauthorized"
+}
+```
+
+##### 500 Internal Server Error
+
+```json
+{
+  "error": "Error message here"
+}
+```
+
+### Notes
+
+- The blacklisted token will automatically expire after 24 hours
+- After logout, the user will need to log in again to access protected routes
+- The token is invalidated immediately upon successful logout
