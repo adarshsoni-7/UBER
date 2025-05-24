@@ -1,18 +1,27 @@
-# Uber API Documentation
+# 🚗 Uber API Documentation
 
-## User Registration
+## 🔐 Authentication
 
-### Endpoint
+All protected endpoints require a valid JWT token which can be provided in two ways:
+
+- Cookie named "token"
+- Authorization header as "Bearer token"
+
+## 👤 User Endpoints
+
+### 1️⃣ User Registration
+
+#### Endpoint
 
 ```
 POST /users/register
 ```
 
-### Description
+#### Description
 
 This endpoint allows new users to register in the system. Upon successful registration, it returns the user details along with an authentication token.
 
-### Request Body Structure
+#### Request Body Structure
 
 ```typescript
 {
@@ -25,40 +34,40 @@ This endpoint allows new users to register in the system. Upon successful regist
 }
 ```
 
-### Field Requirements
+#### Field Requirements
 
-#### fullname Object
+##### fullname Object
 
 - **firstname**
 
   - Type: `string`
-  - Required: Yes
+  - Required: ✅ Yes
   - Minimum Length: 3 characters
   - Example: "John"
 
 - **lastname**
   - Type: `string`
-  - Required: Yes
+  - Required: ✅ Yes
   - Minimum Length: 3 characters
   - Example: "Doe"
 
-#### email
+##### email
 
 - Type: `string`
-- Required: Yes
+- Required: ✅ Yes
 - Format: Must be valid email address
 - Example: "john.doe@example.com"
 
-#### password
+##### password
 
 - Type: `string`
-- Required: Yes
+- Required: ✅ Yes
 - Minimum Length: 8 characters
 - Example: "password123"
 
-### Response
+#### Response
 
-#### Success Response (201 Created)
+##### Success Response (201 Created)
 
 ```json
 {
@@ -75,9 +84,9 @@ This endpoint allows new users to register in the system. Upon successful regist
 }
 ```
 
-#### Error Responses
+##### Error Responses
 
-##### 400 Bad Request
+###### 400 Bad Request
 
 ```json
 {
@@ -91,7 +100,7 @@ This endpoint allows new users to register in the system. Upon successful regist
 }
 ```
 
-##### 500 Internal Server Error
+###### 500 Internal Server Error
 
 ```json
 {
@@ -99,19 +108,19 @@ This endpoint allows new users to register in the system. Upon successful regist
 }
 ```
 
-## User Profile
+### 2️⃣ User Profile
 
-### Endpoint
+#### Endpoint
 
 ```
 GET /users/profile
 ```
 
-### Description
+#### Description
 
 This endpoint retrieves the profile information of the currently authenticated user. It requires a valid authentication token. If the token is blacklisted (e.g., after logout), the request will be rejected with an unauthorized error.
 
-### Authentication
+#### Authentication
 
 - Requires valid JWT token in either:
   - Cookie named "token"
@@ -119,9 +128,9 @@ This endpoint retrieves the profile information of the currently authenticated u
 - Token must not be blacklisted
 - Token must be valid and not expired
 
-### Response
+#### Response
 
-#### Success Response (200 OK)
+##### Success Response (200 OK)
 
 ```json
 {
@@ -135,9 +144,9 @@ This endpoint retrieves the profile information of the currently authenticated u
 }
 ```
 
-#### Error Responses
+##### Error Responses
 
-##### 401 Unauthorized
+###### 401 Unauthorized
 
 ```json
 {
@@ -147,12 +156,12 @@ This endpoint retrieves the profile information of the currently authenticated u
 
 This error will be returned if:
 
-- No token is provided
-- Token is invalid or expired
-- Token is blacklisted (e.g., after logout)
-- User associated with token no longer exists
+- ❌ No token is provided
+- ❌ Token is invalid or expired
+- ❌ Token is blacklisted (e.g., after logout)
+- ❌ User associated with token no longer exists
 
-##### 500 Internal Server Error
+###### 500 Internal Server Error
 
 ```json
 {
@@ -160,27 +169,27 @@ This error will be returned if:
 }
 ```
 
-## User Logout
+### 3️⃣ User Logout
 
-### Endpoint
+#### Endpoint
 
 ```
 GET /users/logout
 ```
 
-### Description
+#### Description
 
 This endpoint allows authenticated users to log out of the system. It invalidates the current session token by adding it to a blacklist and clearing the token cookie.
 
-### Authentication
+#### Authentication
 
 - Requires valid JWT token in either:
   - Cookie named "token"
   - Authorization header as "Bearer token"
 
-### Response
+#### Response
 
-#### Success Response (200 OK)
+##### Success Response (200 OK)
 
 ```json
 {
@@ -188,9 +197,9 @@ This endpoint allows authenticated users to log out of the system. It invalidate
 }
 ```
 
-#### Error Responses
+##### Error Responses
 
-##### 401 Unauthorized
+###### 401 Unauthorized
 
 ```json
 {
@@ -198,7 +207,7 @@ This endpoint allows authenticated users to log out of the system. It invalidate
 }
 ```
 
-##### 500 Internal Server Error
+###### 500 Internal Server Error
 
 ```json
 {
@@ -206,8 +215,8 @@ This endpoint allows authenticated users to log out of the system. It invalidate
 }
 ```
 
-### Notes
+#### Important Notes
 
-- The blacklisted token will automatically expire after 24 hours
-- After logout, the user will need to log in again to access protected routes
-- The token is invalidated immediately upon successful logout
+- ⏰ The blacklisted token will automatically expire after 24 hours
+- 🔒 After logout, the user will need to log in again to access protected routes
+- 🚫 The token is invalidated immediately upon successful logout

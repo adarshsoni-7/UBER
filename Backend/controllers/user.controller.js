@@ -9,7 +9,13 @@ module.exports.register = async (req, res) => {
     res.status(400).json({ errors: errors.array() });
   }
 
-  const { fullname, email, password } = req.body;
+    const { fullname, email, password } = req.body;
+
+    const isUserExist = await UserModel.findOne({ email });
+
+    if (isUserExist) {
+        return res.status(400).json({ error: "User already exists" });
+    }
 
   const hashPassword = await UserModel.hashPassword(password);
 
@@ -20,8 +26,7 @@ module.exports.register = async (req, res) => {
       email,
       password: hashPassword,
     });
-    const token = await user.generateAuthToken();
-    res.cookie("token", token);
+      const token = await user.generateAuthToken();
     res.status(201).json({ user, token });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -50,6 +55,7 @@ module.exports.login = async (req, res) => {
   }
 
   const token = await user.generateAuthToken();
+  res.cookie("token", token);
   res.status(200).json({ user, token });
 };
 
