@@ -12,25 +12,49 @@ POST /users/register
 
 This endpoint allows new users to register in the system. Upon successful registration, it returns the user details along with an authentication token.
 
-### Required Fields
+### Request Body Structure
 
-```json
+```typescript
 {
-  "fullname": {
-    "firstname": "John", // string, minimum 3 characters
-    "lastname": "Doe" // string, minimum 3 characters
-  },
-  "email": "john.doe@example.com", // valid email format
-  "password": "password123" // minimum 8 characters
+  fullname: {
+    firstname: string; // Required, min length: 3
+    lastname: string; // Required, min length: 3
+  }
+  email: string; // Required, must be valid email format
+  password: string; // Required, min length: 8
 }
 ```
 
-### Validation Rules
+### Field Requirements
 
-- First name must be at least 3 characters long
-- Last name must be at least 3 characters long
-- Email must be in valid format
-- Password must be at least 8 characters long
+#### fullname Object
+
+- **firstname**
+
+  - Type: `string`
+  - Required: Yes
+  - Minimum Length: 3 characters
+  - Example: "John"
+
+- **lastname**
+  - Type: `string`
+  - Required: Yes
+  - Minimum Length: 3 characters
+  - Example: "Doe"
+
+#### email
+
+- Type: `string`
+- Required: Yes
+- Format: Must be valid email address
+- Example: "john.doe@example.com"
+
+#### password
+
+- Type: `string`
+- Required: Yes
+- Minimum Length: 8 characters
+- Example: "password123"
 
 ### Response
 
@@ -73,42 +97,4 @@ This endpoint allows new users to register in the system. Upon successful regist
 {
   "error": "Error message here"
 }
-```
-
-### Example Usage
-
-#### cURL
-
-```bash
-curl -X POST http://your-api-url/users/register \
-  -H "Content-Type: application/json" \
-  -d '{
-    "fullname": {
-      "firstname": "John",
-      "lastname": "Doe"
-    },
-    "email": "john.doe@example.com",
-    "password": "password123"
-  }'
-```
-
-#### JavaScript (Fetch)
-
-```javascript
-const response = await fetch("http://your-api-url/users/register", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    fullname: {
-      firstname: "John",
-      lastname: "Doe",
-    },
-    email: "john.doe@example.com",
-    password: "password123",
-  }),
-});
-
-const data = await response.json();
 ```
