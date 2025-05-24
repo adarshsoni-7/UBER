@@ -220,3 +220,129 @@ This endpoint allows authenticated users to log out of the system. It invalidate
 - ⏰ The blacklisted token will automatically expire after 24 hours
 - 🔒 After logout, the user will need to log in again to access protected routes
 - 🚫 The token is invalidated immediately upon successful logout
+
+## 🚚 Captain Endpoints
+
+### Register a New Captain
+
+#### Endpoint
+
+```
+POST /captains/register
+```
+
+#### Description
+
+This endpoint allows new captains to register in the system. Upon successful registration, it returns the captain details along with an authentication token.
+
+> **Note:** The fields `fullname`, `email`, and `password` should be filled exactly as you would when registering a user. These fields follow the same validation rules and requirements as the user registration endpoint.
+
+#### Request Body Structure
+
+```json
+{
+  "fullname": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "email": "john.doe@example.com",
+  "password": "password123",
+  "vehicle": {
+    "color": "White",
+    "plate": "ABC-123",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+}
+```
+
+#### Field Requirements
+
+##### fullname Object
+
+Same requirements as User Registration - Fill exactly as you would for user registration
+ 
+
+##### vehicle Object
+
+- **color**
+
+  - Type: `string`
+  - Required: ✅ Yes
+  - Minimum Length: 3 characters
+  - Example: "White"
+
+- **plate**
+
+  - Type: `string`
+  - Required: ✅ Yes
+  - Minimum Length: 3 characters
+  - Example: "ABC-123"
+
+- **capacity**
+
+  - Type: `integer`
+  - Required: ✅ Yes
+  - Minimum: 1
+
+- **vehicleType**
+  - Type: `string`
+  - Required: ✅ Yes
+  - Must be one of: "car", "motorcycle", "auto"
+
+#### Response
+
+##### Success Response (201 Created)
+
+```json
+{
+  "captain": {
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.doe@example.com",
+    "status": "inactive",
+    "vehicle": {
+      "color": "White",
+      "plate": "ABC-123",
+      "capacity": 4,
+      "vehicleType": "car"
+    },
+    "_id": "..."
+  },
+  "token": "jwt_token_here"
+}
+```
+
+##### Error Responses
+
+###### 400 Bad Request
+
+```json
+{
+  "errors": [
+    {
+      "msg": "First name is required",
+      "param": "fullname.firstname",
+      "location": "body"
+    }
+  ]
+}
+```
+
+###### 400 Captain Already Exists
+
+```json
+{
+  "error": "Captain already exists"
+}
+```
+
+###### 500 Internal Server Error
+
+```json
+{
+  "error": "Error message here"
+}
+```
