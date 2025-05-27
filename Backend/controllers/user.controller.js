@@ -1,7 +1,6 @@
 const userService = require("../services/user.service");
 const userModel = require("../models/user.model");
 const { validationResult } = require("express-validator");
-const bcrypt = require("bcrypt");
 const BlacklistToken = require("../models/blacklistToken.model");
 module.exports.signupUser = async (req, res) => {
   const errors = validationResult(req);
@@ -17,7 +16,7 @@ module.exports.signupUser = async (req, res) => {
     return res.status(400).json({ message: "User already exists" });
   }
 
-  const hashPassword = await bcrypt.hash(password, 10);
+  const hashPassword = await userModel.hashPassword(password);
 
   const user = await userService.createUser({
     firstname: fullname.firstname,
@@ -60,6 +59,6 @@ module.exports.getUserprofile = async (req, res) => {
 
 module.exports.logoutUser = async (req, res) => {
     res.clearCookie("token");
-    await BlacklistToken.create({ token: req.cookies.token });
+    await BlacklistToken.create({ token: req.cookies.token || req.headers.authorization?.split(" ")[1] });
     res.status(200).json({ message: "Logged out successfully" });
 }

@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");  
 
-const userSchema = new Schema({
+const captainSchema = new Schema({
   fullname: {
     firstname: {
       type: String,
@@ -22,6 +24,7 @@ const userSchema = new Schema({
     type: String,
     required: true,
     select: false,
+    minlength: [8, "Password must be at least 8 characters long"],
   },
   vehicle: {
     color: {
