@@ -385,135 +385,144 @@ GET /captains/logout
   "message": "Unauthorized"
 }
 ```
-📍 Maps & Rides API Documentation
+
+## 📍 Maps & Rides API
+
 This API provides services for maps (like geolocation, distance, suggestions) and ride booking (pickup to destination using selected vehicle types).
 
-🗺️ Maps Routes
-📌 1. Get Coordinates
-Endpoint:
-GET /maps/get-coordinates
+### 🗺️ Maps Routes
 
-Description:
+#### 1. Get Coordinates
+
+```http
+GET /maps/get-coordinates
+```
+
+**Description:**  
 Fetch latitude and longitude of a given address.
 
-Query Parameters:
+**Query Parameters:**
+| Parameter | Type | Description | Required |
+|-----------|--------|--------------------------------|----------|
+| address | string | Full address (min length: 3) | ✅ Yes |
 
-Parameter	Type	Description	Required
-address	string	Full address (min length: 3)	✅ Yes
+**Success Response (200):**
 
-Success Response (200):
-
-json
-Copy
-Edit
+```json
 {
-  "ltd": "number",  // Latitude
-  "lng": "number"   // Longitude
+  "ltd": "number", // Latitude
+  "lng": "number" // Longitude
 }
-Error Response (404):
+```
 
-json
-Copy
-Edit
+**Error Response (404):**
+
+```json
 {
   "message": "Coordinates not found"
 }
-📍 2. Get Distance and Time
-Endpoint:
-GET /maps/get-distance-time
+```
 
-Description:
+#### 2. Get Distance and Time
+
+```http
+GET /maps/get-distance-time
+```
+
+**Description:**  
 Get the travel distance and estimated time between two locations.
 
-Query Parameters:
+**Query Parameters:**
+| Parameter | Type | Description | Required |
+|--------------|--------|--------------------------------|----------|
+| origin | string | Starting point (min length: 3) | ✅ Yes |
+| destination | string | Ending point (min length: 3) | ✅ Yes |
 
-Parameter	Type	Description	Required
-origin	string	Starting point (min length: 3)	✅ Yes
-destination	string	Ending point (min length: 3)	✅ Yes
+**Success Response (200):**
 
-Success Response (200):
-
-json
-Copy
-Edit
+```json
 {
   "distance": {
-    "text": "string",   // e.g., "5.2 km"
-    "value": "number"   // e.g., 5200 (in meters)
+    "text": "string", // e.g., "5.2 km"
+    "value": "number" // e.g., 5200 (in meters)
   },
   "duration": {
-    "text": "string",   // e.g., "10 mins"
-    "value": "number"   // e.g., 600 (in seconds)
+    "text": "string", // e.g., "10 mins"
+    "value": "number" // e.g., 600 (in seconds)
   },
-  "status": "string"    // e.g., "OK"
+  "status": "string" // e.g., "OK"
 }
-Error Response (404):
+```
 
-json
-Copy
-Edit
+**Error Response (404):**
+
+```json
 {
   "message": "Distance and time not found"
 }
-🧠 3. Get Auto Complete Suggestions
-Endpoint:
-GET /maps/get-suggestions
+```
 
-Description:
+#### 3. Get Auto Complete Suggestions
+
+```http
+GET /maps/get-suggestions
+```
+
+**Description:**  
 Provides location suggestions as the user types input.
 
-Query Parameters:
+**Query Parameters:**
+| Parameter | Type | Description | Required |
+|-----------|--------|----------------------------|----------|
+| input | string | User input (min: 3 chars) | ✅ Yes |
 
-Parameter	Type	Description	Required
-input	string	User input (min: 3 chars)	✅ Yes
+**Success Response (200):**
 
-Success Response (200):
-
-json
-Copy
-Edit
+```json
 [
   {
-    "suggestion": "string"  // Suggested location
+    "suggestion": "string" // Suggested location
   }
 ]
-Error Response (404):
+```
 
-json
-Copy
-Edit
+**Error Response (404):**
+
+```json
 {
   "message": "Suggestions not found"
 }
-🚕 Ride Routes
-🚗 1. Create a Ride
-Endpoint:
-POST /rides/create
+```
 
-Description:
+### 🚕 Ride Routes
+
+#### 1. Create a Ride
+
+```http
+POST /rides/create
+```
+
+**Description:**  
 Create a ride by specifying pickup, destination, and vehicle type.
 
-Request Body:
+**Request Body:**
 
-json
-Copy
-Edit
+```json
 {
-  "pickup": "string",         // e.g., "Connaught Place"
-  "destination": "string",    // e.g., "Indira Gandhi Airport"
-  "vehicleType": "string"     // one of: "auto", "car", "moto"
+  "pickup": "string", // e.g., "Connaught Place"
+  "destination": "string", // e.g., "Indira Gandhi Airport"
+  "vehicleType": "string" // one of: "auto", "car", "moto"
 }
-Validation Rules:
+```
 
-pickup and destination: at least 3 characters.
+**Validation Rules:**
 
-vehicleType: must be one of "auto", "car", or "moto".
+- `pickup` and `destination`: at least 3 characters
+- `vehicleType`: must be one of "auto", "car", or "moto"
 
-Success Response (201):
+**Success Response (201):**
 
-json
-Copy
-Edit
+```json
 {
   "ride": {
     "_id": "abc123",
@@ -523,13 +532,13 @@ Edit
     "fare": "number"
   }
 }
-Error Responses:
+```
+
+**Error Responses:**
 
 400 Bad Request (Validation Error):
 
-json
-Copy
-Edit
+```json
 {
   "errors": [
     {
@@ -538,11 +547,12 @@ Edit
     }
   ]
 }
+```
+
 500 Internal Server Error:
 
-json
-Copy
-Edit
+```json
 {
   "error": "string"
 }
+```
