@@ -125,14 +125,14 @@ const Home = () => {
         <div className="h-[30%] bg-white p-6 relative ">
           <h5
             ref={panelCloseRef}
-            className="text-2xl text-gray-700 absolute right-3 opacity-0"
+            className="text-2xl text-gray-700 absolute right-[47%] top-2 opacity-0"
             onClick={() => setPanelOpen(false)}
           >
             <i className="ri-arrow-down-wide-fill "></i>
           </h5>
-          <h4 className="text-2xl font-bold    ">Find a trip</h4>
+          <h4 className="text-2xl font-bold mt-3">Find a trip</h4>
           <form onSubmit={handleSubmit}>
-            <div className="line h-16 w-1 bg-gray-700 absolute top-[45%] left-9 rounded-full"></div>
+            <div className="line h-16 w-1 bg-gray-700 absolute top-[55%] left-9 rounded-full"></div>
 
             <input
               onClick={() => setPanelOpen(true)}
@@ -162,7 +162,7 @@ const Home = () => {
 
       <div
         ref={vehiclePanelRef}
-        className="fixed z-10 bottom-0 translate-y-full p-3 py-6  pt-12 w-full bg-white"
+        className="fixed z-10 bottom-0 translate-y-full p-3 py-6 pt-12 w-full bg-white"
       >
         <VehiclePanel
           setConfirmRidePanel={setConfirmRidePanel}
