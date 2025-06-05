@@ -388,7 +388,7 @@ GET /captains/logout
 
 ## 📍 Maps & Rides API
 
-This API provides services for maps (like geolocation, distance, suggestions) and ride booking (pickup to destination using selected vehicle types).
+This API provides services for maps (like geolocation, distance, suggestions) and ride booking (pickup to destination using selected vehicle types) using Google Maps API.
 
 ### 🗺️ Maps Routes
 
